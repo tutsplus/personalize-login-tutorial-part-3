@@ -469,20 +469,22 @@ class Personalize_Login_Plugin {
 				// Recaptcha check failed, display error
 				$redirect_url = add_query_arg( 'register-errors', 'captcha', $redirect_url );
 			} else {
-				$email = $_POST['email'];
-				$first_name = sanitize_text_field( $_POST['first_name'] );
-				$last_name = sanitize_text_field( $_POST['last_name'] );
+				if(is_email($_POST['email']) {
+					$email = is_email($_POST['email']);
+					$first_name = sanitize_text_field( $_POST['first_name'] );
+					$last_name = sanitize_text_field( $_POST['last_name'] );
 
-				$result = $this->register_user( $email, $first_name, $last_name );
+					$result = $this->register_user( $email, $first_name, $last_name );
 
-				if ( is_wp_error( $result ) ) {
-					// Parse errors into a string and append as parameter to redirect
-					$errors = join( ',', $result->get_error_codes() );
-					$redirect_url = add_query_arg( 'register-errors', $errors, $redirect_url );
-				} else {
-					// Success, redirect to login page.
-					$redirect_url = home_url( 'member-login' );
-					$redirect_url = add_query_arg( 'registered', $email, $redirect_url );
+					if ( is_wp_error( $result ) ) {
+						// Parse errors into a string and append as parameter to redirect
+						$errors = join( ',', $result->get_error_codes() );
+						$redirect_url = add_query_arg( 'register-errors', $errors, $redirect_url );
+					} else {
+						// Success, redirect to login page.
+						$redirect_url = home_url( 'member-login' );
+						$redirect_url = add_query_arg( 'registered', $email, $redirect_url );
+					}
 				}
 			}
 
